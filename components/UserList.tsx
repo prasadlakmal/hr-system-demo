@@ -1,15 +1,14 @@
-import { Button, TextField } from "@mui/material";
-import React from "react";
-import VirtualizedTable from "./VirtualizedTable";
+import { Button, TextField } from '@mui/material';
+import React, { ReactNode } from 'react';
 
-const UserList: React.FC = () => {
+const UserList: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div>
-      <TextField label="Search" variant="outlined" fullWidth />
-      <Button variant="contained" color="primary">
+      <TextField label='Search' variant='outlined' fullWidth />
+      <Button variant='contained' color='primary'>
         Add User
       </Button>
-      <VirtualizedTable />
+      {children}
     </div>
   );
 };

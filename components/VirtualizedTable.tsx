@@ -15,6 +15,8 @@ interface Data {
   firstName: string;
   lastName: string;
   age: number;
+  gender: string;
+  email: string;
   phone: string;
   state: string;
 }
@@ -28,17 +30,6 @@ interface ColumnData {
 
 const chance = new Chance(42);
 
-function createData(id: number): Data {
-  return {
-    id,
-    firstName: chance.first(),
-    lastName: chance.last(),
-    age: chance.age(),
-    phone: chance.phone(),
-    state: chance.state({ full: true }),
-  };
-}
-
 const columns: ColumnData[] = [
   { width: 100, label: 'First Name', dataKey: 'firstName' },
   { width: 100, label: 'Last Name', dataKey: 'lastName' },
@@ -46,10 +37,6 @@ const columns: ColumnData[] = [
   { width: 110, label: 'State', dataKey: 'state' },
   { width: 130, label: 'Phone Number', dataKey: 'phone' },
 ];
-
-const rows: Data[] = Array.from({ length: 200 }, (_, index) =>
-  createData(index)
-);
 
 const VirtuosoTableComponents: TableComponents<Data> = {
   // eslint-disable-next-line react/display-name
@@ -106,15 +93,15 @@ function rowContent(_index: number, row: Data) {
   );
 }
 
-export default function VirtualizedTable() {
+export const VirtualizedTable: React.FC<{ data: Data[] }> = ({ data }) => {
   return (
     <Paper style={{ height: 400, width: '100%' }}>
       <TableVirtuoso
-        data={rows}
+        data={data}
         components={VirtuosoTableComponents}
         fixedHeaderContent={fixedHeaderContent}
         itemContent={rowContent}
       />
     </Paper>
   );
-}
+};
