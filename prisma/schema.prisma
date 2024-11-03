@@ -11,6 +11,18 @@ datasource db {
 }
 
 model User {
-  id   String @id @default(cuid())
-  name String
+  id          String @id @default(cuid())
+  firstName   String
+  middleName  String
+  lastName    String
+  email       String @unique
+  phoneNumber String
+  address     String
+  zipCode     String
+  city        String
+  state       String
+  country     String
+  age         Float
+  salary      Float
+  isActive    String
 }

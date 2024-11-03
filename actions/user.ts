@@ -2,14 +2,12 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { notFound } from 'next/navigation';
-import { z } from 'zod';
 
-const createUserSchema = z.object({
-  name: z.string().min(1),
-});
-
-export const getUsers = async () => {
-  const data = await prisma.user.findMany();
+export const getUsers = async (page = 1, limit = 20) => {
+  const data = await prisma.user.findMany({
+    skip: (page - 1) * limit,
+    take: limit,
+  });
   return data;
 };
 
@@ -29,14 +27,8 @@ export const findUserById = async (id: string) => {
 
 export const createUser = async (data: Omit<User, 'id'>) => {
   try {
-    const { name } = createUserSchema.parse({
-      name: data.name,
-    });
-
     await prisma.user.create({
-      data: {
-        name,
-      },
+      data,
     });
   } catch (error) {
     console.log('Failed saving user: ', error);
@@ -46,17 +38,11 @@ export const createUser = async (data: Omit<User, 'id'>) => {
 
 export const updateUser = async (data: User) => {
   try {
-    const { name } = createUserSchema.parse({
-      name: data.name,
-    });
-
     await prisma.user.update({
       where: {
         id: data.id,
       },
-      data: {
-        name,
-      },
+      data,
     });
   } catch (error) {
     console.log('Failed updating user: ', error);

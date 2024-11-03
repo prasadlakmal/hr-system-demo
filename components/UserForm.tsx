@@ -1,34 +1,48 @@
 'use client';
+import { User } from '@/actions/user';
 import { Box, Button, TextField } from '@mui/material';
-import {
-  ErrorMessage,
-  Field,
-  Form,
-  Formik,
-  FormikHelpers,
-  FormikValues,
-} from 'formik';
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
-const validationSchema = Yup.object({
-  name: Yup.string().required('Name is required'),
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string().required('First name is required'),
+  middleName: Yup.string().required('Middle name is required'),
+  lastName: Yup.string().required('Last name is required'),
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  phoneNumber: Yup.string().required('Phone number is required'),
+  address: Yup.string().required('Address is required'),
+  zipCode: Yup.string().required('Zip code is required'),
+  city: Yup.string().required('City is required'),
+  state: Yup.string().required('State is required'),
+  country: Yup.string().required('Country is required'),
+  petName: Yup.string().required('Pet name is required'),
+  age: Yup.number().min(0).max(100).required('Age is required'),
+  salary: Yup.string().required('Salary is required'),
+  dateOfBirth: Yup.date().required('Date of birth is required'),
+  dateOfJoining: Yup.date().required('Date of joining is required'),
+  isActive: Yup.string()
+    .oneOf(['Active', 'Inactive'])
+    .required('Status is required'),
 });
 
-interface UserFormProps<T> {
-  initialValues: T;
-  onSubmit: (values: T, formikHelpers: FormikHelpers<T>) => void | Promise<any>;
+interface UserFormProps {
+  initialValues: User;
+  onSubmit: (
+    values: User,
+    formikHelpers: FormikHelpers<User>
+  ) => void | Promise<any>;
   isPending?: boolean;
   buttonText: string;
 }
 
-function UserForm<T extends FormikValues>({
+function UserForm({
   initialValues,
   onSubmit,
   isPending,
   buttonText,
-}: UserFormProps<T>) {
+}: UserFormProps) {
   return (
-    <Formik<T>
+    <Formik<User>
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
@@ -39,13 +53,15 @@ function UserForm<T extends FormikValues>({
             <Field
               as={TextField}
               fullWidth
-              name='name'
-              label='Name'
+              name='firstName'
+              label='First Name'
               variant='outlined'
-              value={values.name}
+              value={values.firstName}
               onChange={handleChange}
-              helperText={errors.name ? <ErrorMessage name='name' /> : null}
-              error={Boolean(errors.name)}
+              helperText={
+                errors.firstName ? <ErrorMessage name='firstName' /> : null
+              }
+              error={Boolean(errors.firstName)}
             />
           </Box>
           <Box mt={3}>

@@ -6,6 +6,23 @@ import { Alert, Box, Container, Skeleton, Snackbar } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { PageContainer } from '@toolpad/core';
 
+const initialData = {
+  id: '',
+  firstName: '',
+  middleName: '',
+  lastName: '',
+  email: '',
+  phoneNumber: '',
+  address: '',
+  zipCode: '',
+  city: '',
+  state: '',
+  country: '',
+  age: 0,
+  salary: 0,
+  isActive: '',
+};
+
 type UpdateUserProps = {
   params: {
     userId: string;
@@ -20,7 +37,7 @@ const UpdateUser = ({ params }: UpdateUserProps) => {
       const data = await findUserById(params.userId);
       return data;
     },
-    initialData: { id: '', name: '' },
+    initialData,
   });
 
   const { mutate, isPending } = useMutation({
@@ -44,7 +61,7 @@ const UpdateUser = ({ params }: UpdateUserProps) => {
         { title: 'Dashboard', path: '/' },
         { title: 'View', path: '/users' },
         {
-          title: `${data.name}`,
+          title: `${data.firstName} ${data.lastName}`,
           path: '',
         },
       ]}

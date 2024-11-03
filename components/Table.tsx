@@ -56,7 +56,6 @@ function Table<T extends MRT_RowData>({
     rowVirtualizerOptions: { overscan: 5 },
     columnVirtualizerOptions: { overscan: 2 },
     enableRowActions: true,
-    positionActionsColumn: 'last',
     displayColumnDefOptions: {
       'mrt-row-actions': {
         size: 110,
