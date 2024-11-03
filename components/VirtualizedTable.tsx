@@ -1,4 +1,5 @@
 'use client';
+import { User } from '@/data/user';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,39 +7,18 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Chance from 'chance';
 import React from 'react';
 import { TableComponents, TableVirtuoso } from 'react-virtuoso';
-
-interface Data {
-  id: number;
-  firstName: string;
-  lastName: string;
-  age: number;
-  gender: string;
-  email: string;
-  phone: string;
-  state: string;
-}
-
 interface ColumnData {
-  dataKey: keyof Data;
+  dataKey: keyof User;
   label: string;
   numeric?: boolean;
   width?: number;
 }
 
-const chance = new Chance(42);
+const columns: ColumnData[] = [{ width: 100, label: 'Name', dataKey: 'name' }];
 
-const columns: ColumnData[] = [
-  { width: 100, label: 'First Name', dataKey: 'firstName' },
-  { width: 100, label: 'Last Name', dataKey: 'lastName' },
-  { width: 50, label: 'Age', dataKey: 'age', numeric: true },
-  { width: 110, label: 'State', dataKey: 'state' },
-  { width: 130, label: 'Phone Number', dataKey: 'phone' },
-];
-
-const VirtuosoTableComponents: TableComponents<Data> = {
+const VirtuosoTableComponents: TableComponents<User> = {
   // eslint-disable-next-line react/display-name
   Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
     <TableContainer component={Paper} {...props} ref={ref} />
@@ -78,7 +58,7 @@ function fixedHeaderContent() {
   );
 }
 
-function rowContent(_index: number, row: Data) {
+function rowContent(_index: number, row: User) {
   return (
     <React.Fragment>
       {columns.map((column) => (
@@ -93,7 +73,7 @@ function rowContent(_index: number, row: Data) {
   );
 }
 
-export const VirtualizedTable: React.FC<{ data: Data[] }> = ({ data }) => {
+export const VirtualizedTable: React.FC<{ data: User[] }> = ({ data }) => {
   return (
     <Paper style={{ height: 400, width: '100%' }}>
       <TableVirtuoso
