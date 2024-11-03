@@ -50,4 +50,17 @@ export const updateUser = async (data: User) => {
   revalidatePath('/users');
 };
 
+export const deleteUser = async (id: string) => {
+  try {
+    await prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    console.log('Failed updating user: ', error);
+  }
+  revalidatePath('/users');
+};
+
 export type User = Awaited<ReturnType<typeof getUsers>>[0];

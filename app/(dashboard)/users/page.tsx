@@ -1,7 +1,8 @@
 'use client';
-import { getUsers } from '@/actions/user';
+import { deleteUser, getUsers } from '@/actions/user';
 import Table from '@/components/Table';
-import { useQuery } from '@tanstack/react-query';
+import useToast from '@/hooks/useToast';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const columns = [
   { accessorKey: 'firstName', header: 'First Name' },
@@ -16,7 +17,8 @@ const columns = [
 ];
 
 export default function UsersPage() {
-  const { data, isFetching } = useQuery({
+  const { showToast } = useToast();
+  const { data, isFetching, refetch } = useQuery({
     queryKey: [`users`],
     queryFn: async () => {
       const data = await getUsers();
@@ -25,5 +27,25 @@ export default function UsersPage() {
     initialData: [],
   });
 
-  return <Table columns={columns} data={data} loading={isFetching} />;
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteUser,
+    onError() {
+      showToast('Failed to delete user', 'error');
+    },
+    onSuccess() {
+      showToast('User deleted successfully!', 'success');
+      refetch();
+    },
+  });
+
+  return (
+    <Table
+      columns={columns}
+      data={data}
+      loading={isFetching || isPending}
+      onDeleteClick={(id) => {
+        mutate(id);
+      }}
+    />
+  );
 }
