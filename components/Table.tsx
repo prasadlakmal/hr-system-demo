@@ -10,25 +10,26 @@ import {
   type MRT_RowVirtualizer,
   type MRT_SortingState,
 } from 'material-react-table';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 type TableProps<T extends MRT_RowData> = {
   columns: MRT_ColumnDef<T>[];
   data: T[];
   loading?: boolean;
+  onDeleteClick?: (id: string) => void;
 };
 
 function Table<T extends MRT_RowData>({
   columns,
   data,
   loading,
+  onDeleteClick,
 }: TableProps<T>) {
-  //optionally access the underlying virtualizer instance
   const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
 
   useEffect(() => {
-    //scroll to the top of the table when the sorting changes
     try {
       rowVirtualizerInstanceRef.current?.scrollToIndex?.(0);
     } catch (error) {
@@ -38,7 +39,7 @@ function Table<T extends MRT_RowData>({
 
   const table = useMaterialReactTable({
     columns,
-    data, //10,000 rows
+    data,
     defaultDisplayColumn: { enableResizing: true },
     enableBottomToolbar: false,
     enableColumnResizing: true,
@@ -51,35 +52,25 @@ function Table<T extends MRT_RowData>({
     muiTableContainerProps: { sx: { maxHeight: '600px' } },
     onSortingChange: setSorting,
     state: { isLoading: loading, sorting },
-    rowVirtualizerInstanceRef, //optional
-    rowVirtualizerOptions: { overscan: 5 }, //optionally customize the row virtualizer
-    columnVirtualizerOptions: { overscan: 2 }, //optionally customize the column virtualizer
+    rowVirtualizerInstanceRef,
+    rowVirtualizerOptions: { overscan: 5 },
+    columnVirtualizerOptions: { overscan: 2 },
     enableRowActions: true,
     positionActionsColumn: 'last',
     displayColumnDefOptions: {
       'mrt-row-actions': {
-        size: 110, //if using layoutMode that is not 'semantic', the columns will not auto-size, so you need to set the size manually
+        size: 110,
         grow: false,
       },
     },
-    renderRowActions: ({ row, table }) => (
+    renderRowActions: ({ row }) => (
       <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
-        {/* <Link href={`/users/${row.id}/update`}> */}
-        <IconButton
-          onClick={() => {
-            table.setEditingRow(row);
-            console.log(row.original.id);
-            console.log(table);
-          }}
-        >
-          <EditIcon />
-        </IconButton>
-        {/* </Link> */}
-        <IconButton
-          onClick={() => {
-            console.log('delete clicked');
-          }}
-        >
+        <Link href={`/users/${row.original.id}/update`}>
+          <IconButton>
+            <EditIcon />
+          </IconButton>
+        </Link>
+        <IconButton onClick={() => onDeleteClick?.(row.original.id)}>
           <DeleteIcon />
         </IconButton>
       </Box>
