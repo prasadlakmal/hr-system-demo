@@ -5,8 +5,19 @@ import useToast from '@/hooks/useToast';
 import { Alert, Box, Container, Snackbar } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 
-const initialValues = {
-  name: '',
+const initialData = {
+  id: '',
+  firstName: '',
+  middleName: '',
+  lastName: '',
+  email: '',
+  phoneNumber: '',
+  address: '',
+  zipCode: '',
+  city: '',
+  state: '',
+  country: '',
+  isActive: '',
 };
 
 const CreateUser = () => {
@@ -25,7 +36,7 @@ const CreateUser = () => {
     <Container maxWidth='sm'>
       <Box mt={4}>
         <UserForm
-          initialValues={initialValues}
+          initialValues={initialData}
           onSubmit={(values) => mutate(values)}
           buttonText='Create User'
         />

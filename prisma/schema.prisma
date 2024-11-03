@@ -22,7 +22,5 @@ model User {
   city        String
   state       String
   country     String
-  age         Float
-  salary      Float
   isActive    String
 }

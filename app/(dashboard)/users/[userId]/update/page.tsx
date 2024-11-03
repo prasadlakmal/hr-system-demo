@@ -18,8 +18,6 @@ const initialData = {
   city: '',
   state: '',
   country: '',
-  age: 0,
-  salary: 0,
   isActive: '',
 };
 

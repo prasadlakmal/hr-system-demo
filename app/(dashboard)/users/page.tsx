@@ -12,8 +12,6 @@ const columns = [
   { accessorKey: 'zipCode', header: 'Zip' },
   { accessorKey: 'city', header: 'City' },
   { accessorKey: 'country', header: 'Country' },
-  { accessorKey: 'age', header: 'Age' },
-  { accessorKey: 'salary', header: 'Salary' },
   { accessorKey: 'isActive', header: 'Status' },
 ];
 
@@ -27,5 +25,5 @@ export default function UsersPage() {
     initialData: [],
   });
 
-  return <Table columns={columns} data={data} />;
+  return <Table columns={columns} data={data} loading={isFetching} />;
 }
