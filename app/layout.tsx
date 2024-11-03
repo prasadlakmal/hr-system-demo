@@ -1,10 +1,14 @@
+import ReactQueryProvider from '@/lib/reactQueryProvider';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import PageviewIcon from '@mui/icons-material/Pageview';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import type { Navigation } from '@toolpad/core/AppProvider';
 import { AppProvider } from '@toolpad/core/nextjs';
 import * as React from 'react';
 import theme from '../theme';
+
 const NAVIGATION: Navigation = [
   {
     kind: 'header',
@@ -19,6 +23,17 @@ const NAVIGATION: Navigation = [
     segment: 'users',
     title: 'Users',
     icon: <GroupIcon />,
+    children: [
+      {
+        title: 'View',
+        icon: <PageviewIcon />,
+      },
+      {
+        segment: 'create',
+        title: 'Create',
+        icon: <GroupAddIcon />,
+      },
+    ],
   },
 ];
 
@@ -36,7 +51,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             branding={BRANDING}
             theme={theme}
           >
-            {props.children}
+            <ReactQueryProvider>{props.children}</ReactQueryProvider>
           </AppProvider>
         </AppRouterCacheProvider>
       </body>
