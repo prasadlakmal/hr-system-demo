@@ -2,8 +2,9 @@
 import { deleteUser, getUsers } from '@/actions/user';
 import Table from '@/components/Table';
 import useToast from '@/hooks/useToast';
+import { Skeleton } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 const columns = [
   { accessorKey: 'firstName', header: 'First Name' },
@@ -51,16 +52,18 @@ export default function UsersPage() {
   });
 
   return (
-    <Table
-      columns={columns}
-      data={data.data}
-      loading={isFetching || isPending}
-      onDeleteClick={(id) => {
-        mutate(id);
-      }}
-      rowCount={data.count}
-      pagination={pagination}
-      setPagination={setPagination}
-    />
+    <Suspense fallback={<Skeleton />}>
+      <Table
+        columns={columns}
+        data={data.data}
+        loading={isFetching || isPending}
+        onDeleteClick={(id) => {
+          mutate(id);
+        }}
+        rowCount={data.count}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
+    </Suspense>
   );
 }

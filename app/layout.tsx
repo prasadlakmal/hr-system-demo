@@ -4,6 +4,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import { DashboardLayout, PageContainer } from '@toolpad/core';
 import type { Navigation } from '@toolpad/core/AppProvider';
 import { AppProvider } from '@toolpad/core/nextjs';
 import * as React from 'react';
@@ -51,7 +52,11 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             branding={BRANDING}
             theme={theme}
           >
-            <ReactQueryProvider>{props.children}</ReactQueryProvider>
+            <ReactQueryProvider>
+              <DashboardLayout>
+                <PageContainer>{props.children}</PageContainer>
+              </DashboardLayout>
+            </ReactQueryProvider>
           </AppProvider>
         </AppRouterCacheProvider>
       </body>
