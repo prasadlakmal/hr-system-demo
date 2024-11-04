@@ -14,9 +14,20 @@ Or if you want to run a production build
 - `yarn build` to create a production build.
 - `yarn start` to run the production build.
 
-## To seed database
+## Setup local sqlite database and Prisma ORM
 
-- Run `yarn prisma-seed` to fill the sqlite database with 1000 mock data.
+- Create `dev.db` file inside `prisma` directory (Skip this step if it's already there)
+  - `touch prisma/dev.db`
+- Make sure `.env` is there in the root level and it has following property.
+  - `DATABASE_URL="file:./dev.db"`
+- To migrate the schema to your local database, run the below command
+  - `npx prisma db push`
+
+## Seed database
+
+Use the following script to pre-populate the database with 1000 of records.
+
+- `yarn prisma-seed`
 
 ## Features
 
