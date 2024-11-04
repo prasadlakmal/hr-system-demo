@@ -11,13 +11,21 @@ import {
   type MRT_SortingState,
 } from 'material-react-table';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+
+export type Pagination = {
+  pageIndex: number;
+  pageSize: number;
+};
 
 type TableProps<T extends MRT_RowData> = {
   columns: MRT_ColumnDef<T>[];
   data: T[];
   loading?: boolean;
   onDeleteClick?: (id: string) => void;
+  rowCount: number;
+  pagination: Pagination;
+  setPagination: Dispatch<SetStateAction<Pagination>>;
 };
 
 function Table<T extends MRT_RowData>({
@@ -25,6 +33,9 @@ function Table<T extends MRT_RowData>({
   data,
   loading,
   onDeleteClick,
+  rowCount = 0,
+  pagination,
+  setPagination,
 }: TableProps<T>) {
   const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
@@ -41,17 +52,15 @@ function Table<T extends MRT_RowData>({
     columns,
     data,
     defaultDisplayColumn: { enableResizing: true },
-    enableBottomToolbar: false,
+    enableBottomToolbar: true,
     enableColumnResizing: true,
     enableColumnVirtualization: true,
     enableGlobalFilterModes: true,
-    enablePagination: false,
     enableColumnPinning: true,
-    enableRowNumbers: true,
     enableRowVirtualization: true,
     muiTableContainerProps: { sx: { maxHeight: '600px' } },
     onSortingChange: setSorting,
-    state: { isLoading: loading, sorting },
+    state: { isLoading: loading, sorting, pagination },
     rowVirtualizerInstanceRef,
     rowVirtualizerOptions: { overscan: 5 },
     columnVirtualizerOptions: { overscan: 2 },
@@ -74,6 +83,9 @@ function Table<T extends MRT_RowData>({
         </IconButton>
       </Box>
     ),
+    onPaginationChange: setPagination,
+    manualPagination: true,
+    rowCount: rowCount,
   });
 
   return <MaterialReactTable table={table} />;

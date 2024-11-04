@@ -3,6 +3,7 @@ import { deleteUser, getUsers } from '@/actions/user';
 import Table from '@/components/Table';
 import useToast from '@/hooks/useToast';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 
 const columns = [
   { accessorKey: 'firstName', header: 'First Name' },
@@ -17,15 +18,26 @@ const columns = [
 ];
 
 export default function UsersPage() {
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 20,
+  });
   const { showToast } = useToast();
   const { data, isFetching, refetch } = useQuery({
     queryKey: [`users`],
     queryFn: async () => {
-      const data = await getUsers();
+      const data = await getUsers(
+        pagination.pageIndex + 1,
+        pagination.pageSize
+      );
       return data;
     },
-    initialData: [],
+    initialData: { data: [], count: 0 },
   });
+
+  useEffect(() => {
+    refetch();
+  }, [pagination.pageIndex, pagination.pageSize]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: deleteUser,
@@ -41,11 +53,14 @@ export default function UsersPage() {
   return (
     <Table
       columns={columns}
-      data={data}
+      data={data.data}
       loading={isFetching || isPending}
       onDeleteClick={(id) => {
         mutate(id);
       }}
+      rowCount={data.count}
+      pagination={pagination}
+      setPagination={setPagination}
     />
   );
 }

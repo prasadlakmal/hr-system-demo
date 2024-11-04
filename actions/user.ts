@@ -4,11 +4,12 @@ import { revalidatePath } from 'next/cache';
 import { notFound } from 'next/navigation';
 
 export const getUsers = async (page = 1, limit = 20) => {
+  const count = await prisma.user.count();
   const data = await prisma.user.findMany({
     skip: (page - 1) * limit,
     take: limit,
   });
-  return data;
+  return { data, count };
 };
 
 export const findUserById = async (id: string) => {
@@ -63,4 +64,17 @@ export const deleteUser = async (id: string) => {
   revalidatePath('/users');
 };
 
-export type User = Awaited<ReturnType<typeof getUsers>>[0];
+export type User = {
+  id: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  zipCode: string;
+  city: string;
+  state: string;
+  country: string;
+  isActive: string;
+};
