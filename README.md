@@ -59,6 +59,10 @@ Use the following script to pre-populate the database with 1000 of records.
 - Getting Redux to work with React Server Component (RSC) is not an easy path. It’s very prone to issues as the state missmatches can happen between server state and client state (despite the steps provided by official docs)
 - And also, did not come accross a situation where it’s necessory.
 
+### Why a mock server was not used ?
+
+- Most of the mock server libraries available, stubs only the browser `fetch` API. Such a setup doesn't work for server side data fetching. An attempt was made to setup msw, in both server end and client end, but it gave inconsistent behaviours because starting the msw server before the sever components trigger, consistently in every run, was not straightfarward. Therefore, decided to make a simple backend API using available features with Next.js because setting them up was far easier.
+
 ## TODO
 
 - The dashboard page with charts is incomplete, it needs to be integrated with back-end data.
