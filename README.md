@@ -4,16 +4,18 @@ This project was created for demonstration purpose.
 
 ## Setup
 
-- `yarn install` to copy project dependencies
-- `yarn dev` to run the project in watch mode.
+To run in dev mode
+
+- `yarn install`
+- `yarn dev`
+
+Or if you want to run a production build
+
 - `yarn build` to create a production build.
 - `yarn start` to run the production build.
 
 ## To seed database
 
-- Create a `dev.db` file inside `prisma` directory
-  - `cd prisma`
-  - `touch dev.db`
 - Run `yarn prisma-seed` to fill the sqlite database with 1000 mock data.
 
 ## Features
@@ -49,7 +51,6 @@ This project was created for demonstration purpose.
 ## TODO
 
 - The dashboard page with charts is incomplete, it needs to be integrated with back-end data.
-- Sorting and filtering at the moment works only with client side data, integrate it with backend APIs to enable backend sorting and filtering.
+- Sorting and filtering at the moment works only with client side data, should integrate it with backend APIs to enable backend sorting and filtering.
 - Add integration tests and E2E tests.
-- Give a warning on delete action.
-- Improving UX
+- UX improvements i.e: Giving a warning before delete action.
